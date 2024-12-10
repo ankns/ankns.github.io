@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Guild FuXiao Members Profession</title>
+  <link href="https://unpkg.com/layui@2.9.20/dist/css/layui.css" rel="stylesheet">
+  <style>
+    .table-list {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    h5 {
+      text-align: center;
+    }
+  </style>
+</head>
+
+<body>
+  <h5></h5>
+  <div class="table-list">
+    <table id="members"></table>
+  </div>
+
+  <script type="text/html" id="toolbarDemo">
+    <div class="layui-btn-container">
+      <button class="layui-btn layui-btn-danger layui-btn-sm" lay-event="clear">重置</button>
+      <button class="layui-btn layui-btn-sm" lay-event="save">保存</button>
+      <button class="layui-btn layui-btn-sm" lay-event="job">职业信息</button>
+      <button class="layui-btn layui-btn-sm" lay-event="sign">未出勤人员</button>
+    </div>
+  </script>
+
+  <script src="https://libs.baidu.com/jquery/2.0.3/jquery.min.js"></script>
+  <script src="https://unpkg.com/layui@2.9.20/dist/layui.js"></script>
+  <script>
+    const jobs = ['十字军', '骑士', '法师', '贤者', '刺客', '流氓', '猎人', '舞娘/诗人', '牧师', 'AB', '铁匠', '炼金', '非固定']
+    let members = [
+      { name: '数只乳猪横过马路', job: '不固定', kills: 0, desc: '', check: true }, //  LAY_CHECKED: true,
+      { name: '贴贴云墨', job: '十字军', kills: 0, desc: '', check: true },
+      { name: '嗯哼~来了宝贝', job: '不固定', kills: 0, desc: '', check: true },
+      { name: 'K天意', job: '流氓', kills: 0, desc: '', check: true },
+      { name: '陆家浜恶霸', job: '猎人', kills: 0, desc: '', check: true },
+      { name: '周树人', job: '猎人', kills: 0, desc: '', check: true },
+
+      { name: '云中水滴', job: '流氓', kills: 0, desc: '', check: true },
+      { name: '露露菲', job: '炼金', kills: 0, desc: '', check: true },
+      { name: '踏下无双', job: '贤者', kills: 0, desc: '', check: true },
+      { name: '怜悯', job: '牧师', kills: 0, desc: '', check: true },
+      { name: '舍命', job: '十字军', kills: 0, desc: '', check: true },
+      { name: '辣白菜', job: '法师', kills: 0, desc: '', check: true },
+
+      { name: 'Lokoko', job: '牧师', kills: 0, desc: '', check: true },
+      { name: '叮叮归来', job: '贤者', kills: 0, desc: '', check: true },
+      { name: 'Gy07', job: '敏骑', kills: 0, desc: '', check: true },
+      { name: '霏丶', job: '猎人', kills: 0, desc: '', check: true },
+      { name: 'kennis', job: '十字军', kills: 0, desc: '', check: true },
+      { name: '苏苏地', job: '铁匠', kills: 0, desc: '', check: true },
+
+      { name: '星空', job: 'AB', kills: 0, desc: '', check: true },
+      { name: 'PopeSou', job: '流氓', kills: 0, desc: '', check: true },
+      { name: '忘川秋水', job: 'AB', kills: 0, desc: '', check: true },
+      { name: '啊毛', job: '流氓', kills: 0, desc: '', check: true },
+      { name: '暖冬', job: '刺客', kills: 0, desc: '', check: true },
+      { name: '初夏', job: '牧师', kills: 0, desc: '', check: true },
+
+      { name: '一弄', job: '非固定', kills: 0, desc: '', check: true },
+      { name: '抱歉我赶时间丶', job: 'AB', kills: 0, desc: '', check: true },
+      { name: '无名', job: '流氓', kills: 0, desc: '', check: true },
+      { name: '揽月', job: '十字军', kills: 0, desc: '', check: true },
+      { name: '悠悠', job: '牧师', kills: 0, desc: '', check: true },
+      { name: '柳叶', job: '法师', kills: 0, desc: '', check: true },
+
+      { name: '清野有沙', job: '牧师', kills: 0, desc: '', check: true },
+      { name: '时至梦幻', job: '铁匠', kills: 0, desc: '', check: true },
+      { name: 'Mimori', job: '十字军', kills: 0, desc: '', check: true },
+      { name: '守爱缇娜酱', job: '贤者', kills: 0, desc: '', check: true },
+      { name: '湿水炮仗', job: 'AB', kills: 0, desc: '', check: true },
+      { name: '诡异舞步', job: '十字军', kills: 0, desc: '', check: true },
+
+      { name: '琉璃夜', job: '骑士', kills: 0, desc: '', check: true },
+      { name: '多睡大觉', job: '铁匠', kills: 0, desc: '', check: true },
+      { name: '是恋恋呀', job: '法师', kills: 0, desc: '', check: true },
+      { name: '啦啦一号机', job: 'AB', kills: 0, desc: '', check: true },
+      { name: '贤狼', job: '骑士', kills: 0, desc: '', check: true },
+      { name: '小昭', job: '牧师', kills: 0, desc: '', check: true },
+
+      { name: '草盛豆苗稀', job: 'AB', kills: 0, desc: '', check: true },
+      { name: '我厌女', job: '流氓', kills: 0, desc: '', check: true },
+      { name: '代行者VII', job: '骑士', kills: 0, desc: '', check: true },
+      { name: '月隐空夜', job: '法师', kills: 0, desc: '', check: true },
+      { name: '是叉叉呀', job: '刺客', kills: 0, desc: '', check: true },
+      { name: '麻瓜兔兔', job: '牧师', kills: 0, desc: '', check: true },
+
+      { name: '清明', job: '舞娘/诗人', kills: 0, desc: '', check: true },
+      { name: '麻辣咖啡', job: '骑士', kills: 0, desc: '', check: true },
+      { name: '小欧皇', job: '猎人', kills: 0, desc: '', check: true },
+      { name: '晴部尚书', job: '牧师', kills: 0, desc: '', check: true },
+      { name: '你好时光', job: 'AB', kills: 0, desc: '', check: true },
+      { name: '天天不打波利', job: '非固定', kills: 0, desc: '', check: true },
+
+      { name: '天天吃', job: '法师', kills: 0, desc: '', check: true },
+      { name: '秋香的石榴姐', job: '十字军', kills: 0, desc: '', check: true },
+      { name: '活活哦', job: '猎人', kills: 0, desc: '', check: true },
+      { name: '不可思议', job: '牧师', kills: 0, desc: '', check: true },
+      { name: '木木磊', job: '猎人', kills: 0, desc: '', check: true },
+      { name: '白瑞斯', job: '法师', kills: 0, desc: '', check: true },
+
+      { name: '轩轩大魔王', job: '贤者', kills: 0, desc: '', check: true },
+      { name: '月神', job: 'AB', kills: 0, desc: '', check: true },
+      { name: '打他们别打我', job: '法师', kills: 0, desc: '', check: true },
+      { name: '风魔冥', job: '十字军', kills: 0, desc: '', check: true },
+      { name: '番茄炒鸡蛋', job: '贤者', kills: 0, desc: '', check: true },
+      { name: '突突兔小魔女', job: '牧师', kills: 0, desc: '', check: true },
+
+      { name: '大安', job: 'AB', kills: 0, desc: '', check: true },
+      { name: '马喽烧酒', job: '牧师', kills: 0, desc: '', check: true },
+      { name: '东雪莲', job: '炼金', kills: 0, desc: '', check: true },
+      { name: '雾之楱名', job: '猎人', kills: 0, desc: '', check: true },
+      { name: '兔崽', job: '骑士', kills: 0, desc: '', check: true },
+      { name: '哆哒', job: '十字军', kills: 0, desc: '', check: true },
+
+      { name: '夜神', job: 'AB', kills: 0, desc: '', check: true },
+      { name: 'biubiu', job: '猎人', kills: 0, desc: '', check: true },
+      { name: '异世界甘雨', job: '牧师', kills: 0, desc: '', check: true },
+      { name: '三角关系', job: '法师', kills: 0, desc: '', check: true },
+      { name: '萌一', job: '法师', kills: 0, desc: '', check: true },
+      { name: '星一', job: '贤者', kills: 0, desc: '', check: true },
+
+      { name: '大L', job: '刺客', kills: 0, desc: '', check: true },
+      { name: '钱多多', job: '骑士', kills: 0, desc: '', check: true },
+      { name: 'Dawade', job: '刺客', kills: 0, desc: '', check: true },
+      { name: '阿橘', job: '刺客', kills: 0, desc: '', check: true },
+      { name: '影月月', job: '流氓', kills: 0, desc: '', check: true },
+      { name: 'Xiaoluan', job: 'AB', kills: 0, desc: '', check: true },
+
+      { name: '毅少', job: '十字军', kills: 0, desc: '', check: true },
+      { name: '☆孤雀☆', job: '猎人', kills: 0, desc: '', check: true },
+      { name: '坚【】墙', job: '十字军', kills: 0, desc: '', check: true },
+      { name: '标准', job: '猎人', kills: 0, desc: '', check: true },
+      { name: '风铃', job: '牧师', kills: 0, desc: '', check: true },
+
+      { name: '晚雪慢慢', job: '贤者', kills: 0, desc: '', check: true },
+      { name: '千骨', job: '骑士', kills: 0, desc: '', check: true },
+      { name: '卷王涵基玐', job: '炼金', kills: 0, desc: '', check: true },
+      { name: '炮灰葵', job: '骑士', kills: 0, desc: '', check: true },
+      { name: '毛毛回忆录', job: '猎人', kills: 0, desc: '', check: true },
+      { name: '半世浮生', job: '骑士', kills: 0, desc: '', check: true },
+      { name: '肥佬亮', job: 'AB', kills: 0, desc: '', check: true },
+      { name: 'so豪', job: '非固定', kills: 0, desc: '', check: true },
+      { name: '幼稚园杀手', job: '非固定', kills: 0, desc: '', check: true },
+      { name: '晓糖', job: '非固定', kills: 0, desc: '', check: true },
+      { name: '', job: '', kills: 0, desc: '', check: false },
+    ]
+    let storageMembers = localStorage.getItem('members')
+    if (storageMembers) {
+      members = JSON.parse(storageMembers)
+    }
+    layui.use(function () {
+      let table = layui.table;
+      table.render({
+        elem: '#members',
+        title: 'RO初心服-《拂晓》巅峰赛出勤 ' + new Date().toJSON().slice(0, 10),
+        type: 'xls',
+        toolbar: '#toolbarDemo',
+        defaultToolbar: ['filter', 'exports'],
+        height: 'full-35',
+        width: 800,
+        page: false,
+        totalRow: true,
+        data: members,
+        even: false,
+        size: 'sm',
+        cols: [
+          [
+            { type: 'checkbox', fixed: 'left', width: 40 },
+            { type: 'numbers', fixed: 'left', width: 46 },
+            { field: 'name', title: '玩家名称', edit: 'text', sort: true, width: 140 },
+            { field: 'job', title: '职业', align: 'center', edit: 'text', sort: true, width: 110 },
+            { field: 'kills', title: '击杀', align: 'center', edit: 'text', hide: true, sort: true, width: 76, totalRow: true },
+            { field: 'desc', title: '定位/说明', align: 'center', edit: 'text', sort: true },
+            {
+              field: 'check', title: '出勤状态', align: 'center', sort: true, width: 104, templet: function (d) {
+                if (d.check) {
+                  return '正常'
+                }
+                return `<span style="color:#ff5722;">缺席</span>`
+              }
+            },
+          ]
+        ]
+      })
+      table.on('edit(members)', function (obj) {
+        let oldValue = obj.oldValue
+        let value = obj.value
+        let field = obj.field // name | job | kills
+        let update = {}
+
+        if (field == 'name') {
+          if (!value) {
+            update['name'] = ''
+            update['job'] = ''
+            update['kills'] = 0
+            update['check'] = false
+          }
+        }
+        if (field == 'job') {
+          if (jobs.indexOf(value) == -1) {
+            value = oldValue
+            layer.msg('该职业不存在')
+          }
+        }
+        if (field == 'kills') {
+          value = parseInt(value)
+          if (isNaN(value)) {
+            value = 0
+          }
+        }
+        // 更新当前缓存数据
+        update[field] = value
+        obj.update(update, true)
+      })
+      // 工具栏事件
+      table.on('toolbar(members)', function (obj) {
+        let id = obj.config.id
+        let getData = table.getData(id)
+        switch (obj.event) {
+          case  'clear':
+            members.map(item => item.check = true)
+            localStorage.setItem('members', JSON.stringify(members))
+            location.reload()
+            break;
+          case 'save':
+            let checkStatus = table.checkStatus(id)
+            let checks_arr = checkStatus.data
+            let obj = {}
+            let new_members = []
+            for (let i = 0; i < members.length; i++) {
+              obj = {
+                name: members[i].name,
+                job: members[i].job,
+                kills: members[i].kills,
+                desc: members[i].desc,
+                check: false
+              }
+              checks_arr.map((item) => {
+                if (item.name == members[i].name) {
+                  obj.check = true
+                }
+              })
+              new_members.push(obj)
+            }
+            localStorage.setItem('members', JSON.stringify(new_members))
+            break;
+          case 'job':
+            let getData = table.getData(id)
+            
+            layer.alert(layui.util.escape(JSON.stringify(getData)))
+            break
+          case 'sign':
+            
+            layer.alert(layui.util.escape(JSON.stringify(getData)))
+            break
+        }
+      })
+    })
+    $('h5').text('职业列表：' + jobs.join(' '))
+    function allReset() {
+      localStorage.clear()
+    }
+  </script>
+</body>
+
+</html>
